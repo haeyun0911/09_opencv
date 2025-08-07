@@ -75,7 +75,6 @@ while cap.isOpened():
         cv2.putText(img, "EAR: {:.2f}".format(ear), (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
         drowsy_state = check_drowsiness(ear)      
-        print(drowsy_state)
         if drowsy_state:
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 1)
 
