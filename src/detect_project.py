@@ -16,6 +16,9 @@ def eye_aspect_ratio(eye):
     ear = (A + B) / (2.0 * C)
     return ear
 
+LEFT_EYE_ID= list(range(36,42))
+RIGHT_EYE_ID=list(range(42,48))
+
 while cap.isOpened():    
     ret, img = cap.read()  # 프레임 읽기
     if ret:
@@ -31,14 +34,19 @@ while cap.isOpened():
 
             # 얼굴 랜드마크 검출 --- ④
             shape = predictor(gray, rect)
-            # 왼쪽 눈 랜드마크 (36번 ~ 41번)
-            for i in range(36, 42):
-                part = shape.part(i)
-                
-                
-            # 오른쪽 눈 랜드마크 (42번 ~ 47번)
-            for i in range(42, 48):
-                part = shape.part(i)
+           # 랜드마크 좌표를 NumPy 배열로 변환
+        shape_np = np.zeros((68, 2), dtype="int")
+        for i in range(68):
+            shape_np[i] = (shape.part(i).x, shape.part(i).y)
+
+        # 왼쪽 눈과 오른쪽 눈 랜드마크 추출
+        left_eye = shape_np[LEFT_EYE_ID]
+        right_eye = shape_np[RIGHT_EYE_ID]
+        
+        # EAR 계산
+        left_ear = eye_aspect_ratio(left_eye)
+        right_ear = eye_aspect_ratio(right_eye)
+        ear = (left_ear + right_ear) / 2.0
                 
         cv2.imshow('face detect', img)
     else:
