@@ -17,7 +17,7 @@ def eye_aspect_ratio(eye):
     ear = (A + B) / (2.0 * C)
     return ear
 
-EYE_AR_THRESHOLD = 0.25 # EAR 임계값
+EYE_AR_THRESHOLD = 0.18 # EAR 임계값
 EYE_AR_CONSEC_FRAMES = 30 # 눈이 감긴 연속 프레임 수
 
 COUNTER = 0 # 연속 프레임 카운터
@@ -75,8 +75,9 @@ while cap.isOpened():
         cv2.putText(img, "EAR: {:.2f}".format(ear), (10, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
         drowsy_state = check_drowsiness(ear)      
-        
-         
+        print(drowsy_state)
+
+
         cv2.imshow('face detect', img)
     else:
         break
