@@ -1,11 +1,20 @@
 # 기본 랜드마크 검출
 import cv2
 import dlib
-
+from scipy.spatial import distance as dist
+import numpy as np
 # 얼굴 검출기와 랜드마크 검출기 생성 --- ①
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('./shape_predictor_68_face_landmarks.dat')
 cap = cv2.VideoCapture(0)
+
+# EAR 계산 함수 정의
+def eye_aspect_ratio(eye):
+    A = dist.euclidean(eye[1], eye[5])
+    B = dist.euclidean(eye[2], eye[4])
+    C = dist.euclidean(eye[0], eye[3])
+    ear = (A + B) / (2.0 * C)
+    return ear
 
 while cap.isOpened():    
     ret, img = cap.read()  # 프레임 읽기
