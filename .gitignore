@@ -1,1 +1,4 @@
 data/*.xml
+src/*.xml
+src/*.bz2
+src/faces/*
