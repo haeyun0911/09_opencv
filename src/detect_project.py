@@ -8,6 +8,7 @@ detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('./shape_predictor_68_face_landmarks.dat')
 cap = cv2.VideoCapture(0)
 
+
 # EAR 계산 함수 정의
 def eye_aspect_ratio(eye):
     A = dist.euclidean(eye[1], eye[5])
@@ -15,6 +16,30 @@ def eye_aspect_ratio(eye):
     C = dist.euclidean(eye[0], eye[3])
     ear = (A + B) / (2.0 * C)
     return ear
+
+EYE_AR_THRESHOLD = 0.25 # EAR 임계값
+EYE_AR_CONSEC_FRAMES = 30 # 눈이 감긴 연속 프레임 수
+
+COUNTER = 0 # 연속 프레임 카운터
+ALARM_ON = False # 알람 상태
+
+def check_drowsiness(ear_value):
+    global COUNTER, ALARM_ON
+
+    if ear_value < EYE_AR_THRESHOLD:
+        COUNTER += 1
+
+        if COUNTER >= EYE_AR_CONSEC_FRAMES:
+            # 졸음 상태로 판단
+            ALARM_ON = True
+            return True
+    else:
+        # 눈을 뜨면 카운터 초기화
+        COUNTER = 0
+        ALARM_ON = False
+        return False
+    
+    return False
 
 LEFT_EYE_ID= list(range(36,42))
 RIGHT_EYE_ID=list(range(42,48))
@@ -48,7 +73,10 @@ while cap.isOpened():
         right_ear = eye_aspect_ratio(right_eye)
         ear = (left_ear + right_ear) / 2.0
         cv2.putText(img, "EAR: {:.2f}".format(ear), (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)       
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        drowsy_state = check_drowsiness(ear)      
+        
+         
         cv2.imshow('face detect', img)
     else:
         break
