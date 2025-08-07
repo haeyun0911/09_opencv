@@ -47,7 +47,7 @@ while cap.isOpened():
         left_ear = eye_aspect_ratio(left_eye)
         right_ear = eye_aspect_ratio(right_eye)
         ear = (left_ear + right_ear) / 2.0
-                
+               
         cv2.imshow('face detect', img)
     else:
         break
