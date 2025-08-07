@@ -10,8 +10,7 @@ cap = cv2.VideoCapture(0)
 while cap.isOpened():    
     ret, img = cap.read()  # 프레임 읽기
     if ret:
-
-        img = cv2.imread("../img/man_face.jpg")
+        
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # 얼굴 영역 검출 --- ②
         faces = detector(gray)
