@@ -35,5 +35,4 @@ while cap.isOpened():
     if cv2.waitKey(5) == 27:
         break
 
-cv2.imshow("face landmark", img)
-cv2.waitKey(0)
+cv2.destroyAllWindows()
