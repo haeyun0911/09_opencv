@@ -22,14 +22,16 @@ while cap.isOpened():
 
             # 얼굴 랜드마크 검출 --- ④
             shape = predictor(gray, rect)
-            for i in range(68):
-                # 부위별 좌표 추출 및 표시 --- ⑤
+            # 왼쪽 눈 랜드마크 (36번 ~ 41번)
+            for i in range(36, 42):
                 part = shape.part(i)
-                cv2.circle(img, (part.x, part.y), 2, (0, 0, 255), -1)
-                cv2.putText(img, str(i), (part.x, part.y), cv2.FONT_HERSHEY_PLAIN, \
-                                                0.5,(255,255,255), 1, cv2.LINE_AA)
                 
-                cv2.imshow('face detect', img)
+                
+            # 오른쪽 눈 랜드마크 (42번 ~ 47번)
+            for i in range(42, 48):
+                part = shape.part(i)
+                
+        cv2.imshow('face detect', img)
     else:
         break
     if cv2.waitKey(5) == 27:
