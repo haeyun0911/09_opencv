@@ -10,7 +10,7 @@ cap = cv2.VideoCapture(0)
 while cap.isOpened():    
     ret, img = cap.read()  # 프레임 읽기
     if ret:
-        
+
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # 얼굴 영역 검출 --- ②
         faces = detector(gray)
@@ -28,6 +28,12 @@ while cap.isOpened():
                 cv2.circle(img, (part.x, part.y), 2, (0, 0, 255), -1)
                 cv2.putText(img, str(i), (part.x, part.y), cv2.FONT_HERSHEY_PLAIN, \
                                                 0.5,(255,255,255), 1, cv2.LINE_AA)
+                
+                cv2.imshow('face detect', img)
+    else:
+        break
+    if cv2.waitKey(5) == 27:
+        break
 
 cv2.imshow("face landmark", img)
 cv2.waitKey(0)
